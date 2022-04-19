@@ -2,6 +2,9 @@
   "expo": {
     "name": "Ekhata",
     "slug": "Ekhata",
+    "splash": {
+      "image": "./Screens/Pages/logo.png"
+    },
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
