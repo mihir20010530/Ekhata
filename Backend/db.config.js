@@ -4,7 +4,7 @@ const dbConn = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'e-khata'
+    database: 'demo'
 });
 
 dbConn.connect(function(error){

@@ -13,7 +13,7 @@ var Supplier =  function(supplier) {
 
 //get all product
 Supplier.getAllSupplier = (result) => {
-    dbConn.query('SELECT * FROM Supplier', (err, res) => {
+    dbConn.query('SELECT * FROM Supplier ORDER BY NAME', (err, res) => {
         if(err){
             console.log('Error while fatching supplier', err);
             result(null,err);

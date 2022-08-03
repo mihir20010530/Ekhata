@@ -11,9 +11,10 @@ import {
   ScrollView,
 } from "react-native";
 import Transaction from '../Customer/Transaction';
+import { Checkbox } from "react-native-paper";
 
 var logo=require('./logo.png');
-const apidata = "https://30a4-2402-3a80-16e5-7009-60eb-9ea0-687c-a44d.ngrok.io";
+const apidata = "https://8183-2402-3a80-16ed-ac55-d425-28de-f1d8-2092.ngrok.io";
  
 export default function AddCoustomer() {
   const [name, setName] = useState("");
@@ -24,16 +25,18 @@ export default function AddCoustomer() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
-
+  const [description, setDescription] = useState("");
+ 
   var data = {
     "name": name,
     "phone_no": phone,
     "email": email,
     "left_money": leftmoney,
     "address": address,
-    "city": city,
-    "state": state,
-    "country": country,
+    "city": "Rajkot",
+    "state": "Gujarat",
+    "country": "India",
+    "description": description,
  }
 
  function postCustomer() {
@@ -98,13 +101,22 @@ alert("Customer Created Successfully....");
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
+          placeholder="Enter payment type (₹/gm)"
+          placeholderTextColor="#EEF5DB"
+          onChangeText={(description) => setDescription(description)}
+        />
+      </View>
+
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
           placeholder="Address."
           placeholderTextColor="#EEF5DB"
           onChangeText={(address) => setAddress(address)}
         />
       </View>
-
-      <View style={styles.inputView}>
+      
+      {/* <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
           placeholder="City."
@@ -130,6 +142,7 @@ alert("Customer Created Successfully....");
           onChangeText={(country) => setCountry(country)}
         />
       </View>
+      */}
 
       <TouchableOpacity style={styles.registerBtn}
       onPress={postCustomer}>

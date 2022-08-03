@@ -1,21 +1,29 @@
 import React,  { useState , Component, useEffect} from 'react';
 import { StyleSheet, Text, View, Modal, TextInput, Button, FlatList} from 'react-native';
 
-const apidata = "https://8425-2402-3a80-16fe-bd41-105d-ad7d-e055-940b.ngrok.io";
+const apidata = "https://d6cd-2402-3a80-16fd-5112-2ca7-fa44-daa0-4bce.ngrok.io";
 
 export default function CashTransaction({route}) {
     let supplierdata=route.params;
-    console.warn(supplierdata.s_money);
+    //console.warn(supplierdata.s_money);
     const [modalVisible, setModalVisible] = useState(false);
     const [isLoaded, setIsLoded] = useState(true);
     const [getCashTransaction, setCashTransaction] = useState("");
     const [addMoney, setMoney] = useState("");
     const [getLeft_money, setLeft_money] = useState("");
+    const [getAmountBefore, setAmountBefore] = useState("");
+    const [loading,setLoading] = useState(true);
+    var currDate = new Date().toLocaleDateString();
+
     let left_money = parseInt(getLeft_money) - addMoney;
+    let amount_after = left_money;
     
     var data = {
         "s_name":supplierdata.s_name,
         "amount":addMoney,
+        "date":currDate,
+        "amount_before":getAmountBefore,
+        "amount_after":amount_after,
      }
 
      const getCashTransactionData = async() => {
@@ -24,7 +32,8 @@ export default function CashTransaction({route}) {
             const cashTransactionData = await response.json();
             setCashTransaction(cashTransactionData);
             setIsLoded(false);
-            console.log(cashTransactionData);
+            setLoading(false);
+            //console.log(cashTransactionData);
         }
         catch (error){
             console.log(error);
@@ -34,10 +43,11 @@ export default function CashTransaction({route}) {
         const getSupplierDataByName = async() => {
           try {
               const response = await fetch(apidata+"/api/v1/Supplier/"+supplierdata.s_id);
-              const customerDataByName = await response.json();
-              setLeft_money(customerDataByName[0].left_money);
-              console.warn("hii"+customerDataByName[0].left_money);
-              console.warn("2");
+              const supplierDataByName = await response.json();
+              setLeft_money(supplierDataByName[0].left_money);
+              setAmountBefore(supplierDataByName[0].left_money);
+              //console.warn("hii"+customerDataByName[0].left_money);
+              //console.warn("2");
           }
           catch (error){
               console.log(error);
@@ -45,7 +55,7 @@ export default function CashTransaction({route}) {
           };
 
         function postCashTransaction() {
-            console.warn(data);
+            //console.warn(data);
             fetch(apidata+'/api/v1/SupplierCashTransaction' ,{
             method: "POST",
             headers: {
@@ -55,11 +65,13 @@ export default function CashTransaction({route}) {
             body: JSON.stringify(data)
           })
 
-          console.warn(left_money);
+          //console.warn(left_money);
           var supplierUpdateData = {
             "left_money":left_money,
           }
-          console.warn(supplierUpdateData);
+          
+          
+          //console.warn(supplierUpdateData);
           fetch(apidata+'/api/v1/Supplier/'+supplierdata.s_name ,{
           method: "PUT",
           headers: {
@@ -68,7 +80,6 @@ export default function CashTransaction({route}) {
           },
           body: JSON.stringify(supplierUpdateData)
         })
-        
           setModalVisible(!modalVisible)
           }
 
@@ -122,21 +133,38 @@ export default function CashTransaction({route}) {
         onPress={() => setModalVisible(true)}  
         />
 
+      <View style={{margin: 20,padding: 10,height: 100,borderWidth: 2,borderRadius: 10}}>
+        <View style={{flexDirection: 'row',flex: 1}}>
+                <Text style={{position: 'absolute'}}>Supplier Name</Text>
+                <Text style={{position: 'absolute', right: 0}}>Amount</Text>
+                </View>
+                <Text style={{textAlign: 'center'}}> Date MM/DD/YY</Text>
+                <View style={{flexDirection: 'row',flex: 1}}>
+                <Text style={{position: 'absolute', bottom: 0, left: 0}}>Amount Before</Text>
+                <Text style={{position: 'absolute', bottom: 0, right: 0}}>Amount After</Text>
+        </View>
+      </View>
+
 <FlatList 
         data={getCashTransaction}
         keyExtractor={(item, index) => item.id}
         renderItem = { ({item})=> {
             return (
-                <View style={{marginHorizontal: 20, marginVertical: 10,padding: 10,height: 50, backgroundColor: '#B8D8D8',borderColor: '#FE5F55',borderWidth: 2,borderRadius: 10}}>
-                <View style={{flexDirection: 'row'}}>
-                <Text style={{position: 'absolute', color: '#4F6367', justifyContent: 'center',fontSize: 20}}>{item.s_name}</Text>
-                <Text style={{position: 'absolute', right: 0, color: '#FE5F55', justifyContent: 'center', fontSize: 20}}>{item.amount}</Text>
-                </View>
-                <Text style={{textAlign: 'center', color: '#4F6367',fontSize: 15}}>{item.date}</Text>
-            
-        </View>
+              <View style={{margin: 20,padding: 10,height: 100, backgroundColor: 'lightblue',borderColor: 'red',borderWidth: 2,borderRadius: 10}}>
+              <View style={{flexDirection: 'row',flex: 1}}>
+              <Text style={{position: 'absolute'}}>{item.s_name}</Text>
+              <Text style={{position: 'absolute', right: 0}}>{item.amount}</Text>
+              </View>
+              <Text style={{textAlign: 'center'}}> {item.date}</Text>
+              <View style={{flexDirection: 'row',flex: 1}}>
+              <Text style={{position: 'absolute', bottom: 0, left: 0}}>{item.amount_before}</Text>
+              <Text style={{position: 'absolute', bottom: 0, right: 0}}> {item.amount_after}</Text>
+              </View>
+          </View>
             );
         }}
+        onRefresh={() =>getCashTransactionData()}
+        refreshing={loading}
     />
         </View>
     )

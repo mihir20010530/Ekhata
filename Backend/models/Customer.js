@@ -9,11 +9,12 @@ var Customer =  function(customer)  {
     this.city          =  customer.city;
     this.state          =  customer.state;
     this.country          =  customer.country;
+    this.description        =   customer.description;
 }
 
 //get all product
 Customer.getAllCustomer = (result) => {
-    dbConn.query('SELECT * FROM CUSTOMER', (err, res) => {
+    dbConn.query('SELECT * FROM CUSTOMER ORDER BY NAME', (err, res) => {
         if(err){
             console.log('Error while fatching error', err);
             result(null,err);

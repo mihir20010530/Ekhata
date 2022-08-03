@@ -42,12 +42,12 @@ export default function Login({navigation}) {
       </View>
  
       <TouchableOpacity>
-        <Text style={styles.forgot_button}>Forgot Password?</Text>
+        <Text style={styles.forgot_button}></Text>
       </TouchableOpacity>
  
       <TouchableOpacity style={styles.loginBtn}
       onPress={() =>{
-        if (email == "mihirsangani2001@gmail.com" && password == "Mihir@123"){
+        if (email == "Mihirsangani2001@gmail.com" && password == "Mihir@123"){
           alert("Successfully Login");
           navigation.navigate('Product')
         }
@@ -85,9 +85,9 @@ const styles = StyleSheet.create({
   },
  
   forgot_button: {
-    height: 40,
-    marginBottom: 20,
-    marginTop: 20,
+    height: 1,
+    marginBottom: 0,
+    marginTop: 1,
     color: "#FE5F55",
   },
  

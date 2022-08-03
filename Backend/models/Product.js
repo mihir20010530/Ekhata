@@ -8,7 +8,7 @@ var Product =  function(product) {
 
 //get all product
 Product.getAllProduct = (result) => {
-    dbConn.query('SELECT * FROM PRODUCT', (err, res) => {
+    dbConn.query('SELECT * FROM PRODUCT ORDER BY P_ID DESC', (err, res) => {
         if(err){
             console.log('Error while fatching error', err);
             result(null,err);

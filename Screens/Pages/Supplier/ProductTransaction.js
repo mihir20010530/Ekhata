@@ -1,9 +1,7 @@
 import React,  { useState , Component, useEffect} from 'react';
 import { StyleSheet, Text, View, Modal, TextInput, Button, FlatList} from 'react-native';
-import {apiData} from '../Api';
 
-
-const apidata = "https://8425-2402-3a80-16fe-bd41-105d-ad7d-e055-940b.ngrok.io";
+const apidata = "https://0b17-1-38-92-20.ngrok.io";
 
 export default function ProductTransaction({route}) {
     let supplierdata=route.params;
@@ -18,6 +16,17 @@ export default function ProductTransaction({route}) {
     const [addPerchase_price, setPerchase_price] = useState("");
     const [addQuantity, setQuantity] = useState("");
     const [getLeft_money, setLeft_money] = useState("");
+    const [loading,setLoading] = useState(true);
+    const [getAmountBefore, setAmountBefore] = useState("");
+    var currDate = new Date().toLocaleDateString();
+
+
+    let left_money = getLeft_money + addQuantity*addPerchase_price;
+    // console.warn(left_money);
+    var supplierUpdateData = {
+      "left_money":left_money,
+    }
+    let amount_after = left_money;
 
     const getProductTransactionData = async() => {
         try {
@@ -25,6 +34,8 @@ export default function ProductTransaction({route}) {
             const productTransactionData = await response.json();
             setProductTransaction(productTransactionData);
             setIsLoded(false);
+            setLoading(false);
+
            // console.log(productTransactionData);
         }
         catch (error){
@@ -37,7 +48,10 @@ export default function ProductTransaction({route}) {
             "s_name":supplierdata.s_name,
             "perchase_price":addPerchase_price,
             "quantity":addQuantity,
+            "date":currDate,
             "p_name":productData,
+            "amount_before":getAmountBefore,
+            "amount_after":amount_after,
          }
          // console.warn(supplierTransactionData);
           fetch(apidata+'/api/v1/SupplierTransaction' ,{
@@ -48,16 +62,12 @@ export default function ProductTransaction({route}) {
           },
           body: JSON.stringify(supplierTransactionData)
         })
-        console.warn("1");
+        //console.warn("1");
         setModalVisible(!modalVisible)        
         }
 
         function updateData() {
-          let left_money = getLeft_money + addQuantity*addPerchase_price;
-           console.warn(left_money);
-          var supplierUpdateData = {
-            "left_money":left_money,
-          }
+          
         //  console.warn(supplierUpdateData);
           fetch(apidata+'/api/v1/Supplier/'+supplierdata.s_name ,{
           method: "PUT",
@@ -67,18 +77,18 @@ export default function ProductTransaction({route}) {
           },
           body: JSON.stringify(supplierUpdateData)
         })
-        console.warn("3");        
+        //console.warn("3");        
 
         let quantity = parseInt(getProductByName.quantity) + parseInt(addQuantity);
         let rate = (getProductByName.rate*getProductByName.quantity + addPerchase_price*addQuantity)/quantity;
-        console.warn(quantity,rate);
+       // console.warn(quantity,rate);
         var productUpdateData = {
           "quantity":quantity,
           "rate":rate,
         }
         
        // console.warn(productUpdateData);
-          fetch(apidata+'/api/v1/Product/'+productData ,{
+       /*   fetch(apidata+'/api/v1/Product/'+productData ,{
           method: "PUT",
           headers: {
             Accept: 'application/json',
@@ -86,7 +96,7 @@ export default function ProductTransaction({route}) {
           },
           body: JSON.stringify(productUpdateData)
         })
-        
+        */
         }
 
         const getProductData = async() => {
@@ -108,7 +118,7 @@ export default function ProductTransaction({route}) {
                 const productDataByName = await response.json();
                 setProductByName(productDataByName[0]);
                 //console.warn("hii"+getProductByName.quantity);
-                console.warn("2");
+                //console.warn("2");
                 
             }
             catch (error){
@@ -121,8 +131,9 @@ export default function ProductTransaction({route}) {
                   const response = await fetch(apidata+"/api/v1/Supplier/"+supplierdata.s_id);
                   const supplierDataByName = await response.json();
                   setLeft_money(supplierDataByName[0].left_money);
-                  console.warn("hii"+supplierDataByName[0].left_money);
-                  console.warn("2");
+                  setAmountBefore(supplierDataByName[0].left_money);
+                  //console.warn("hii"+supplierDataByName[0].left_money);
+                  //console.warn("2");
                   
               }
               catch (error){
@@ -198,7 +209,22 @@ export default function ProductTransaction({route}) {
         title="Add Product"
         onPress={() => setModalVisible(true)}  
         />
-            
+
+            <View style={{margin: 20,padding: 10,height: 100,borderWidth: 2,borderRadius: 10}}>
+                <View style={{flexDirection: 'row',flex: 1}}>
+                <Text style={{position: 'absolute'}}>Supplier Name</Text>
+                <Text style={{position: 'absolute', right: 0}}>Product Name</Text>
+                </View>
+                <Text style={{textAlign: 'center'}}> Date MM/DD/YY</Text>
+                <View style={{flexDirection: 'row',flex: 1}}>
+                <Text style={{position: 'absolute', bottom: 0, left: 0}}>Quantity</Text>
+                <Text style={{position: 'absolute', bottom: 0, right: 0}}>Purchase Price</Text>
+                </View>
+                <View style={{flexDirection: 'row',flex: 1}}>
+                <Text style={{position: 'absolute', bottom: 0, left: 0}}>Amount Before</Text>
+                <Text style={{position: 'absolute', bottom: 0, right: 0}}>Amount After</Text>
+                </View>
+            </View>            
 
     <FlatList 
         data={getProductTransaction}
@@ -215,9 +241,15 @@ export default function ProductTransaction({route}) {
                 <Text style={{position: 'absolute', bottom: 0, left: 0}}>{item.quantity}</Text>
                 <Text style={{position: 'absolute', bottom: 0, right: 0}}> {item.perchase_price}</Text>
                 </View>
+                <View style={{flexDirection: 'row',flex: 1}}>
+                <Text style={{position: 'absolute', bottom: 0, left: 0}}>{item.amount_before}</Text>
+                <Text style={{position: 'absolute', bottom: 0, right: 0}}>{item.amount_after}</Text>
+                </View>
             </View>
             );
         }}
+        onRefresh={() =>getProductTransactionData()}
+        refreshing={loading}
     />
     
     </View>

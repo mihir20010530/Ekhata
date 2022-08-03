@@ -14,26 +14,28 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-
-const apidata = "https://8425-2402-3a80-16fe-bd41-105d-ad7d-e055-940b.ngrok.io";
-
+const apidata = "https://c3ac-2402-3a80-16eb-3f31-f4e0-e30-49fb-4a56.ngrok.io";
 
 export default function HomeProduct() {
     const [getProduct, setProduct] = useState();
     const [isLoaded, setIsLoded] = useState(true);
+    const [loading,setLoading] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
     const [addProduct, addData] = useState("");
     var data = {
       "p_name":addProduct,
+      "quantity":0,
+      "rate":0,
    }
-    
 
     const getProductData = async() => {
         try {
+          //console.warn(apidata.apidata);
             const response = await fetch(apidata+"/api/v1/Product");
             const productData = await response.json();
             setProduct(productData);
             setIsLoded(false);
+            setLoading(false);
            // console.log(response);
         }
         catch (error){
@@ -96,11 +98,17 @@ export default function HomeProduct() {
         </View>
     </Modal>
 
-        <Button style={styles.btn}
+        <Button
         title="Add Product"
         onPress={() => setModalVisible(true)}  
         />
-            
+
+            <View style={{marginHorizontal: 20,padding: 10,height: 50,}}>
+            <View style={{flexDirection: 'row'}}>
+            <Text style={{position: 'absolute', color: '#4F6367', justifyContent: 'center',fontSize: 20}}>Product Name</Text>
+            <Text style={{position: 'absolute', right: 0, color: '#FE5F55', justifyContent: 'center', fontSize: 20}}>Quantity</Text>
+            </View>   
+            </View>         
 
     <FlatList 
         data={getProduct}
@@ -116,6 +124,8 @@ export default function HomeProduct() {
     </View>
             );
         }}
+        onRefresh={() =>getProductData()}
+        refreshing={loading}
     />
     
     </View>
@@ -138,12 +148,6 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         marginVertical: 10,
 
-    },
-
-    btn: {
-    right: 10,
-    left: 10,
-    position: 'absolute',
     },
 
     centeredView: {

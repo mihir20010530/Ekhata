@@ -4,13 +4,16 @@ var SupplierTransaction =  function(supplierTransaction)  {
     this.s_name        =  supplierTransaction.s_name;
     this.perchase_price      =  supplierTransaction.perchase_price;
     this.quantity          =  supplierTransaction.quantity;
+    this.date           =   supplierTransaction.date;
     this.p_name          =  supplierTransaction.p_name;
+    this.amount_before      =   supplierTransaction.amount_before;
+    this.amount_after      =   supplierTransaction.amount_after;
 }
 
 
 //get Supplier Transaction by id
 SupplierTransaction.getSupplierTransactionByID = (name, result) => {
-    dbConn.query('SELECT * FROM Supplier_transaction WHERE s_name=?',name, (err, res)=> {
+    dbConn.query('SELECT * FROM Supplier_transaction WHERE s_name=? ORDER BY ID DESC',name, (err, res)=> {
         if(err){
             console.log('Error while fatching Supplier Transaction by name', err);
             result(null,err);

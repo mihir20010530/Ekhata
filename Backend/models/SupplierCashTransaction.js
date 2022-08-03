@@ -3,12 +3,15 @@ var dbConn = require('../db.config');
 var SupplierCashTransaction =  function(supplierCashTransaction)  {
     this.s_name        =  supplierCashTransaction.s_name;
     this.amount      =  supplierCashTransaction.amount;
+    this.date       =   supplierCashTransaction.date;
+    this.amount_before  =  supplierCashTransaction.amount_before;
+    this.amount_after  =  supplierCashTransaction.amount_after;
 }
 
 
 //get supplier cash Transaction by name
 SupplierCashTransaction.getSupplierCashTransactionByID = (name, result) => {
-    dbConn.query('SELECT * FROM Supplier_cash_transaction WHERE s_name=?',name, (err, res)=> {
+    dbConn.query('SELECT * FROM Supplier_cash_transaction WHERE s_name=? ORDER BY ID DESC',name, (err, res)=> {
         if(err){
             console.log('Error while fatching supplier cash Transaction by name', err);
             result(null,err);

@@ -15,12 +15,13 @@ import {
 } from "react-native";
 
 import Transaction from "./Transaction";
-import {apiData} from '../Api';
-const apidata = "https://8425-2402-3a80-16fe-bd41-105d-ad7d-e055-940b.ngrok.io";
+const apidata = "https://31eb-2402-3a80-16ff-102e-5011-fc06-2bd9-d60a.ngrok.io";
 
 export default function HomeSupplier({ navigation }) {
         const [getSupplier, setSupplier] = useState();
         const [isLoaded, setIsLoded] = useState(true);
+        const [loading,setLoading] = useState(true);
+
     
         const getSupplierData = async() => {
             try {
@@ -28,7 +29,8 @@ export default function HomeSupplier({ navigation }) {
                 const supplierData = await response.json();
                 setSupplier(supplierData);
                 setIsLoded(false);
-                console.log(supplierData);
+                setLoading(false);
+                //console.log(supplierData);
             }
             catch (error){
                 console.log(error);
@@ -45,6 +47,13 @@ export default function HomeSupplier({ navigation }) {
             title="Add Supplier"
             onPress={() => navigation.navigate('Add Supplier')}  
             />
+
+            <View style={{marginHorizontal: 20,padding: 10,height: 50,}}>
+            <View style={{flexDirection: 'row'}}>
+            <Text style={{position: 'absolute', color: '#4F6367', justifyContent: 'center',fontSize: 20}}>Supplier Name</Text>
+            <Text style={{position: 'absolute', right: 0, color: '#FE5F55', justifyContent: 'center', fontSize: 20}}>Remaining Money</Text>
+            </View>   
+            </View> 
                 
             <FlatList 
             data={getSupplier}
@@ -62,6 +71,8 @@ export default function HomeSupplier({ navigation }) {
         </View>
                 );
             }}
+        onRefresh={() =>getSupplierData()}
+        refreshing={loading}
         />
     
         

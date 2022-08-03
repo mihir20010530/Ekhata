@@ -7,6 +7,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './Screens/Pages/Login';
 import Home from './Screens/Pages/Home';
 
+var apiData = "https://a3e6-2402-3a80-16f7-7006-29d9-1f53-b52a-4d54.ngrok.io";
+
 const Appscreen = createNativeStackNavigator();
 export default function App() {
   return (

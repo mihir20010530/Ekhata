@@ -11,7 +11,7 @@ import {
   ScrollView
 } from "react-native";
 
-const apidata = "https://4993-2402-8100-398d-5f11-d038-2a00-4bd5-e9cb.ngrok.io";
+const apidata = "https://0b17-1-38-92-20.ngrok.io";
 
 var logo=require('./logo.png');
  
@@ -24,15 +24,18 @@ export default function AddSupplier() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
+  const [description, setDescription] = useState("");
+
   var data = {
     "name": name,
     "phone_no": phone,
     "email": email,
     "left_money": leftmoney,
     "address": address,
-    "city": city,
-    "state": state,
-    "country": country,
+    "city": "Rajkot",
+    "state": "Gujarat",
+    "country": "India",
+    "description": description,
  }
 
  function postSupplier() {
@@ -95,12 +98,22 @@ export default function AddSupplier() {
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
+          placeholder="Enter payment type (₹/gm)"
+          placeholderTextColor="#EEF5DB"
+          onChangeText={(description) => setDescription(description)}
+        />
+      </View>
+
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
           placeholder="Address."
           placeholderTextColor="#EEF5DB"
           onChangeText={(address) => setAddress(address)}
         />
       </View>
 
+    {/*
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
@@ -126,7 +139,7 @@ export default function AddSupplier() {
           placeholderTextColor="#EEF5DB"
           onChangeText={(country) => setCountry(country)}
         />
-      </View>
+      </View>*/}
 
       <TouchableOpacity style={styles.registerBtn}
       onPress={postSupplier}>
