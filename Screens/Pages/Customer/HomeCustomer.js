@@ -15,7 +15,7 @@ import {
 } from "react-native";
 
 import Transaction from "./Transaction";
-const apidata = "https://129e-2402-3a80-16f0-fd08-31bb-5151-45ba-d690.ngrok.io";
+const apidata = "https://a27f-2402-3a80-16f4-b0aa-d058-22b4-f910-2019.ngrok.io";
 
 export default function HomeCustomer({ navigation }) {
     const [getCustomer, setCustomer] = useState();
@@ -43,15 +43,23 @@ export default function HomeCustomer({ navigation }) {
 
     return (        
         <View style={{backgroundColor: '#EEF5DB', flex: 1}}>
+        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
         <Button style={styles.btn}
         title="Add Customer"
         onPress={() => navigation.navigate('Add Customer')}  
         />
+        <Button
+        title="Refresh"
+        onPress={() =>  getCustomerData()
+        }
+        />
+        </View>
 
             <View style={{marginHorizontal: 20,padding: 10,height: 50,}}>
             <View style={{flexDirection: 'row'}}>
             <Text style={{position: 'absolute', color: '#4F6367', justifyContent: 'center',fontSize: 20}}>Customer Name</Text>
             <Text style={{position: 'absolute', right: 0, color: '#FE5F55', justifyContent: 'center', fontSize: 20}}>Remaining Money</Text>
+            
             </View>   
             </View> 
             
@@ -61,11 +69,16 @@ export default function HomeCustomer({ navigation }) {
         renderItem = { ({item})=> {
             return (
             <View 
-            style={{marginHorizontal: 20, marginVertical: 10, padding: 10,height: 50, backgroundColor: '#B8D8D8',borderColor: '#FE5F55',borderWidth: 2,borderRadius: 10}}
-            onStartShouldSetResponder={() => navigation.push('Transaction', JSON.stringify(item))}>
+            style={{marginHorizontal: 5, marginVertical: 5, paddingVertical: 10, paddingHorizontal: 3, height: 50, backgroundColor: '#B8D8D8',borderColor: '#FE5F55',borderWidth: 2,borderRadius: 10}}
+            //onStartShouldSetResponder={() => navigation.push('Transaction', JSON.stringify(item))}
+            >
             <View style={{flexDirection: 'row'}}>
-            <Text style={{position: 'absolute', color: '#4F6367', justifyContent: 'center',fontSize: 20}}>{item.name}</Text>
+            <Text style={{position: 'absolute',left: 50, color: '#4F6367', justifyContent: 'center',fontSize: 20}}>{item.name}</Text>
             <Text style={{position: 'absolute', right: 0, color: '#FE5F55', justifyContent: 'center', fontSize: 20}}>{item.left_money}{item.description}</Text>
+            <Button style={{position: 'absolute',padding: 0, color: '#4F6367', justifyContent: 'center',fontSize: 5}}
+            title="info"
+            onPress={() => navigation.push('Transaction', JSON.stringify(item))}
+            />
             </View>
         
     </View>

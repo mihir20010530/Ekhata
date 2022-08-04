@@ -70,6 +70,7 @@ export default function Home() {
             />
           )
         }} />*/}
+        {/*
         <Tab.Screen name="Supplier" component={SupplierStackScreen}
         options={{
           tabBarActiveBackgroundColor: '#B8D8D8',
@@ -88,6 +89,7 @@ export default function Home() {
             />
           )
         }}  />
+         */}
         <Tab.Screen name="Customer" component={CustomerStackScreen}
         options={{
           headerShown: false,
