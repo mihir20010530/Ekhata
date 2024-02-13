@@ -14,7 +14,7 @@ import Transaction from '../Customer/Transaction';
 import { Checkbox } from "react-native-paper";
 
 var logo=require('./logo.png');
-const apidata = "https://8183-2402-3a80-16ed-ac55-d425-28de-f1d8-2092.ngrok.io";
+const apidata = "http://192.168.246.40:1235";
  
 export default function AddCoustomer() {
   const [name, setName] = useState("");

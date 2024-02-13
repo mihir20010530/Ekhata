@@ -15,7 +15,7 @@ import {
 } from "react-native";
 
 import Transaction from "./Transaction";
-const apidata = "https://a27f-2402-3a80-16f4-b0aa-d058-22b4-f910-2019.ngrok.io";
+const apidata = "http://192.168.246.40:1235";
 
 export default function HomeCustomer({ navigation }) {
     const [getCustomer, setCustomer] = useState();
@@ -75,7 +75,7 @@ export default function HomeCustomer({ navigation }) {
             <View style={{flexDirection: 'row'}}>
             <Text style={{position: 'absolute',left: 50, color: '#4F6367', justifyContent: 'center',fontSize: 20}}>{item.name}</Text>
             <Text style={{position: 'absolute', right: 0, color: '#FE5F55', justifyContent: 'center', fontSize: 20}}>{item.left_money}{item.description}</Text>
-            <Button style={{position: 'absolute',padding: 0, color: '#4F6367', justifyContent: 'center',fontSize: 5}}
+            <Button style={{padding: 0, color: '#4F6367', fontSize: 5}}
             title="info"
             onPress={() => navigation.push('Transaction', JSON.stringify(item))}
             />

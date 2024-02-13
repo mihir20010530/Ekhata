@@ -1,7 +1,7 @@
 import React,  { useState , Component, useEffect} from 'react';
 import { StyleSheet, Text, View, Modal, TextInput, Button, FlatList, Picker, TextComponent} from 'react-native';
 
-const apidata = "https://129e-2402-3a80-16f0-fd08-31bb-5151-45ba-d690.ngrok.io";
+const apidata = "http://192.168.246.40:1235";
 
 export default function ProductTransaction({route}) {
     let customerdata=route.params;
@@ -176,7 +176,7 @@ export default function ProductTransaction({route}) {
           keyboardType='numeric'
           backgroundColor="#B8D8D8"   
           placeholderTextColor="#4F6367"
-          onChangeText={(addPerchase_price) =>{getCustomerDataByName();getProductDataByName(); setPerchase_price(addPerchase_price)}}
+          onChangeText={(addPerchase_price) =>{getCustomerDataByName(); setPerchase_price(addPerchase_price)}}
         />
         <TextInput
           style={{height:40,borderRadius:10,width:200,marginTop:10,paddingLeft:20}}

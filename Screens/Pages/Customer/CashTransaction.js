@@ -1,7 +1,7 @@
 import React,  { useState , Component, useEffect} from 'react';
 import { StyleSheet, Text, View, Modal, TextInput, Button, FlatList} from 'react-native';
 
-const apidata = "https://129e-2402-3a80-16f0-fd08-31bb-5151-45ba-d690.ngrok.io";
+const apidata = "http://192.168.246.40:1235";
 
 export default function CashTransaction({route}) {
     let customerdata=route.params;
@@ -58,7 +58,7 @@ export default function CashTransaction({route}) {
           };
 
         function postCashTransaction() {
-            console.warn(data);
+            //console.warn(data);
             fetch(apidata+'/api/v1/CustomerCashTransaction' ,{
             method: "POST",
             headers: {
@@ -68,11 +68,11 @@ export default function CashTransaction({route}) {
             body: JSON.stringify(data)
           })
 
-          console.warn(left_money);
+          //console.warn(left_money);
           var customerUpdateData = {
             "left_money":left_money,
           }
-          console.warn(customerUpdateData);
+          //console.warn(customerUpdateData);
           fetch(apidata+'/api/v1/Customer/'+customerdata.c_name ,{
           method: "PUT",
           headers: {
